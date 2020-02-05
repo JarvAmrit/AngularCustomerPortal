@@ -1,0 +1,58 @@
+<button (click)="toggleVisibility()">Show/Hide</button>
+<div [hidden]="isVisible">
+    <!--square bracket is only for attributes adn {{}} is only for variables and paranthesis is for htmlevenet element/methods-->
+
+    <h2>{{title}}</h2>
+    <filter-criteria-textbox (filterCriteriaChanged)="filterCustomers($event)">
+    </filter-criteria-textbox>
+
+    <!-- <h4>Count of Customers: {{lstCustomers.length}}</h4> -->
+    <!--always give numerical values in right side-->
+    <!-- directives altogether is called the way we bind the template to the controller 
+    Types:
+        1. Attribute directives - [] applied on properties
+        2. Event directives- () applied on click
+        3. Structural directives: they change the dom structure ngif and ngfor-->
+        <!--In which scenarios components can interact using events
+        - as we type we fire the event. quick time intervals.
+        -->
+    <table border="1" width="100%">
+        <tr>
+            <th (click)='sortCustomers("id")'>ID
+
+                <img src="/Users/AMRIT/Documents/Angular8/Day2/my-app/src/assets/icons/Down_Arrow.png" height="60px" width="60px" [hidden]="isAscendingSort"/>
+
+                <img src="/Users/AMRIT/Documents/Angular8/Day2/my-app/src/assets/icons/Up_Arrow.png" height="60px" width="60px" [hidden]="!isAscendingSort"/>
+                
+            </th>
+            <th (click)='sortCustomers("name")'>Name</th>
+            <th (click)='sortCustomers("city")'>City</th>
+            <th (click)='sortCustomers("customerSince")'>Customer Since</th>
+            <th (click)='sortCustomers("orderTotal")'>Order Total</th>
+        </tr>
+        <!-- <tr *ngFor ='let cust of lstCustomers |defaultSorter:[{sortProp:"id"},{isAsc:"true"}]'> : one way and another way is below -->
+            <!-- lstCustomers is replaced by filteredCustomers in all the places over here -->
+            <tr *ngFor ='let cust of filteredCustomers |defaultSorter:"id":"true"'>
+            <td>{{cust.id}}</td>
+            <td>{{cust.name | nameFormatter | uppercase}}</td>
+            <td>{{cust.city}}</td>           
+            <td align="center">{{cust.customerSince| date:"dd:MM:yyyy"}}</td>
+            <td>{{cust.orderTotal | currency:"INR"}}</td>
+        </tr>
+        <!--Rows for Order Total-->  
+              <tr *ngIf="filteredCustomers && filteredCustomers.length">
+                  <td align="right" colspan="4">Orders Total</td>
+                  <td>{{customersOrderTotal | currency:"INR"}}</td>
+              </tr>
+              <tr *ngIf="filteredCustomers && filteredCustomers.length">
+                <td align="right" colspan="4">Count of Customers:</td>
+                <td>{{lstCustomers.length}}</td>
+            </tr>
+            <tr *ngIf="!filteredCustomers || !filteredCustomers.length">
+                <td align="center" colspan="5">No record found!!!</td>
+                
+            </tr>
+    
+
+    </table>
+</div>
